@@ -14,6 +14,14 @@ namespace SpriteKind {
 namespace StatusBarKind {
     export const shield = StatusBarKind.create()
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
+    if (armour.value == 0) {
+        playerhealth.value += -50
+    } else {
+        armour.value += -60
+    }
+    tiles.setTileAt(location, assets.tile`transparency16`)
+})
 function spawnboss () {
 	
 }
@@ -310,30 +318,42 @@ statusbars.onZero(StatusBarKind.Health, function (status) {
         tiles.destroySpritesOfKind(SpriteKind.F3)
         tiles.destroySpritesOfKind(SpriteKind.F5)
         tiles.destroySpritesOfKind(SpriteKind.Boss)
+        tiles.destroySpritesOfKind(SpriteKind.StatusBar)
         tiles.setTilemap(tilemap`level6`)
         story.printCharacterText("GHOST-S239 - KIA")
         story.showPlayerChoices("RESTART LEVEL", "GAME OVER")
         if (story.checkLastAnswer("RESTART LEVEL") && level == 0) {
             level = 0
+            shield2()
+            ammo_bar()
             spawnplayer1()
             startlevel()
         }
         if (story.checkLastAnswer("RESTART LEVEL") && level == 1) {
             level = 1
+            shield2()
+            ammo_bar()
             spawnplayer1()
             startlevel()
         }
         if (story.checkLastAnswer("RESTART LEVEL") && level == 2) {
             level = 2
+            shield2()
+            ammo_bar()
+            spawnplayer1()
             startlevel()
         }
         if (story.checkLastAnswer("RESTART LEVEL") && level == 3) {
             level = 3
+            shield2()
+            ammo_bar()
             spawnplayer1()
             startlevel()
         }
         if (story.checkLastAnswer("RESTART LEVEL") && level == 4) {
             level = 4
+            shield2()
+            ammo_bar()
             spawnplayer1()
             startlevel()
         }
@@ -350,14 +370,6 @@ function spawnmboss5 () {
 }
 function spawngooper () {
 	
-}
-function shield () {
-    armour = statusbars.create(4, 30, StatusBarKind.shield)
-    armour.value = 100
-    armour.setColor(1, 12, 11)
-    armour.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
-    armour.positionDirection(CollisionDirection.Left)
-    armour.setLabel("AP")
 }
 function startlevel () {
     if (level == 0) {
@@ -400,6 +412,14 @@ function spawnmboss1 () {
 function spawnEMPI () {
 	
 }
+function shield2 () {
+    armour = statusbars.create(4, 30, StatusBarKind.shield)
+    armour.value = 100
+    armour.setColor(1, 12, 11)
+    armour.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
+    armour.positionDirection(CollisionDirection.Left)
+    armour.setLabel("AP")
+}
 statusbars.onZero(StatusBarKind.Energy, function (status) {
     player1.sayText("Changing mag!", 1000, false)
     pause(2000)
@@ -409,12 +429,12 @@ statusbars.onZero(StatusBarKind.Energy, function (status) {
 function spawndrone () {
 	
 }
-let armour: StatusBarSprite = null
 let level = 0
 let ammobar: StatusBarSprite = null
 let ammo = 0
-let playerhealth: StatusBarSprite = null
 let player1: Sprite = null
+let playerhealth: StatusBarSprite = null
+let armour: StatusBarSprite = null
 color.setColor(11, color.rgb(27, 27, 27))
 color.setColor(12, color.rgb(42, 42, 42))
 color.setColor(14, color.rgb(475, 475, 475))
@@ -666,14 +686,14 @@ scene.setBackgroundImage(img`
     `)
 multilights.toggleLighting(false)
 spawnplayer1()
+shield2()
 ammo_bar()
-shield()
 startlevel()
 game.onUpdate(function () {
     player1.ay = 500
 })
-game.onUpdateInterval(5000, function () {
-    if (armour.value > 0) {
+game.onUpdateInterval(3000, function () {
+    if (armour.value > -500) {
         armour.value += 20
     } else {
         armour.value += 0
