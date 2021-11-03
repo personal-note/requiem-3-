@@ -11,6 +11,9 @@ namespace SpriteKind {
     export const F5 = SpriteKind.create()
     export const Boss = SpriteKind.create()
 }
+namespace StatusBarKind {
+    export const shield = StatusBarKind.create()
+}
 function spawnboss () {
 	
 }
@@ -54,6 +57,8 @@ function spawnplayer1 () {
     scene.cameraFollowSprite(player1)
     playerhealth = statusbars.create(20, 4, StatusBarKind.Health)
     playerhealth.attachToSprite(player1)
+    playerhealth.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
+    playerhealth.setLabel("HP")
     if (character.matchesRule(player1, character.rule(Predicate.NotMoving, Predicate.FacingRight))) {
         character.runFrames(
         player1,
@@ -277,7 +282,8 @@ function spawnmboss2 () {
 	
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-	
+    ammo += -8
+    ammobar.value += -8
 })
 function spawncombat () {
 	
@@ -345,6 +351,14 @@ function spawnmboss5 () {
 function spawngooper () {
 	
 }
+function shield () {
+    armour = statusbars.create(4, 30, StatusBarKind.shield)
+    armour.value = 100
+    armour.setColor(13, 12, 11)
+    armour.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
+    armour.positionDirection(CollisionDirection.Left)
+    armour.setLabel("AP")
+}
 function startlevel () {
     if (level == 0) {
         tiles.setTilemap(tilemap`level1`)
@@ -352,6 +366,12 @@ function startlevel () {
         tiles.setTilemap(tilemap`level2`)
     } else if (level == 2) {
         tiles.setTilemap(tilemap`level3`)
+        multilights.addFlashLightSource(
+        player1,
+        0,
+        120,
+        30
+        )
     } else if (level == 3) {
         tiles.setTilemap(tilemap`level4`)
     } else if (level == 4) {
@@ -364,16 +384,38 @@ function startlevel () {
         tiles.setTileAt(value, assets.tile`transparency16`)
     }
 }
+function ammo_bar () {
+    ammo = 5
+    ammobar = statusbars.create(50, 4, StatusBarKind.Energy)
+    ammobar.value = 100
+    ammobar.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
+    ammobar.setColor(5, 0, 4)
+    ammobar.positionDirection(CollisionDirection.Top)
+    ammobar.setLabel("Ammo")
+    ammo = 100
+}
 function spawnmboss1 () {
 	
 }
 function spawnEMPI () {
 	
 }
+statusbars.onZero(StatusBarKind.Energy, function (status) {
+    player1.sayText("Changing mag!", 1000, false)
+    pause(2000)
+    ammo = 100
+    ammobar.value = 100
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`transparency16`, function (sprite, location) {
+	
+})
 function spawndrone () {
 	
 }
+let armour: StatusBarSprite = null
 let level = 0
+let ammobar: StatusBarSprite = null
+let ammo = 0
 let playerhealth: StatusBarSprite = null
 let player1: Sprite = null
 color.setColor(11, color.rgb(27, 27, 27))
@@ -627,7 +669,16 @@ scene.setBackgroundImage(img`
     `)
 multilights.toggleLighting(false)
 spawnplayer1()
+ammo_bar()
+shield()
 startlevel()
 game.onUpdate(function () {
     player1.ay = 500
+})
+game.onUpdateInterval(5000, function () {
+    if (armour.value > 0) {
+        armour.value += 20
+    } else {
+        armour.value += 0
+    }
 })
