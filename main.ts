@@ -354,7 +354,7 @@ function spawngooper () {
 function shield () {
     armour = statusbars.create(4, 30, StatusBarKind.shield)
     armour.value = 100
-    armour.setColor(13, 12, 11)
+    armour.setColor(1, 12, 11)
     armour.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
     armour.positionDirection(CollisionDirection.Left)
     armour.setLabel("AP")
@@ -405,9 +405,6 @@ statusbars.onZero(StatusBarKind.Energy, function (status) {
     pause(2000)
     ammo = 100
     ammobar.value = 100
-})
-scene.onOverlapTile(SpriteKind.Player, assets.tile`transparency16`, function (sprite, location) {
-	
 })
 function spawndrone () {
 	
