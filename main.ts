@@ -292,6 +292,44 @@ function spawnmboss2 () {
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     ammo += -8
     ammobar.value += -8
+    if (ammo > 0) {
+        if (true) {
+            let mySprite: Sprite = null
+            character.runFrames(
+            mySprite,
+            [img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `],
+            500,
+            character.rule(Predicate.NotMoving)
+            )
+        } else if (false) {
+        	
+        } else if (false) {
+        	
+        } else if (false) {
+        	
+        } else if (false) {
+        	
+        } else {
+        	
+        }
+    }
 })
 function spawncombat () {
 	
@@ -401,7 +439,7 @@ function ammo_bar () {
     ammobar = statusbars.create(50, 4, StatusBarKind.Energy)
     ammobar.value = 100
     ammobar.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
-    ammobar.setColor(5, 0, 4)
+    ammobar.setColor(5, 12, 4)
     ammobar.positionDirection(CollisionDirection.Top)
     ammobar.setLabel("Ammo")
     ammo = 100
